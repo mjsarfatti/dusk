@@ -8,6 +8,7 @@
   <script src="../node_modules/mocha/mocha.js"></script>
   <script>mocha.setup('bdd')</script>
   <script type="text/javascript" src="../dist/dusk.js"></script>
+  <script src="http://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
   <script src="test.js"></script>
   <script>
     var _duskImmediateSelect = dusk('.demo');
@@ -25,9 +26,10 @@
     </div>
     <img id="weight" src="http://images.unsplash.com/photo-1467321638755-7246fd0dc1f3?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1125&q=95&cs=tinysrgb" />
   </div>
+  <div class="performance"></div>
 
   <script>
-    dusk(function() {
+    dusk.DOMReady(function() {
       _duskReadySelect = dusk('.demo');
       mocha.run();
     });
