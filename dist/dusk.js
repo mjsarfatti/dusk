@@ -48,7 +48,7 @@
         case 'string':
 
           // Return if context was not found
-          $context = select(context)[0];
+          $context = context === document ? document : select(context)[0];
           if ($context === undefined) return c;
 
           // Redirect simple selectors to the more performant function
