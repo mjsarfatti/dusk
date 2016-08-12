@@ -171,7 +171,7 @@ describe('dusk()', function () {
 
 });
 
-describe('.-––~^performance', function () {
+describe('.-––~^ performance', function () {
 
   var $perf;
 
@@ -230,7 +230,7 @@ describe('.-––~^performance', function () {
     const dTime = result.a;
     const $Time = result.b;
     console.log('[perf] vs jQuery #id      - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
-    if (dTime > $Time) err();
+    if (dTime > $Time * 1.1) err();
   });
 
   it('should be comparable or faster than $(\'tag\')', function () {
@@ -242,7 +242,7 @@ describe('.-––~^performance', function () {
     const dTime = result.a;
     const $Time = result.b;
     console.log('[perf] vs jQuery tag      - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
-    if (dTime > $Time) err();
+    if (dTime > $Time * 1.1) err();
   });
 
   it('should be comparable or faster than $(\'.class\')', function () {
@@ -254,7 +254,7 @@ describe('.-––~^performance', function () {
     const dTime = result.a;
     const $Time = result.b;
     console.log('[perf] vs jQuery .class   - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
-    if (dTime > $Time) err();
+    if (dTime > $Time * 1.1) err();
   });
 
   it('should be comparable or faster than $(\'table td:first-child\')', function () {
@@ -266,7 +266,7 @@ describe('.-––~^performance', function () {
     const dTime = result.a;
     const $Time = result.b;
     console.log('[perf] vs jQuery complex  - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
-    if (dTime > $Time) err();
+    if (dTime > $Time * 1.1) err();
   });
 
 });
