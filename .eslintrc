@@ -1,0 +1,6 @@
+{
+  "extends": "airbnb",
+  "rules": {
+  	"padded-blocks": 0
+  }
+}
