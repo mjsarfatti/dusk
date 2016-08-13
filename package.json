@@ -1,6 +1,6 @@
 {
   "name": "dusk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A feathery, alacritous DOM abstraction, partly based on PlainJS",
   "main": "dist/dusk.min.js",
   "scripts": {
