@@ -50,8 +50,7 @@
     // Select yo'self
     if (selector && selector.dusked) return selector;
     // Or return a new instance
-    // eslint-disable-next-line no-use-before-define
-    return new Dusker(selector, context);
+    return new Dusker(selector, context); // eslint-disable-line
   };
 
   dusk.fn = [];
