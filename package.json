@@ -2,15 +2,15 @@
   "name": "dusk",
   "version": "1.0.0",
   "description": "A feathery, alacritous DOM abstraction, partly based on PlainJS",
-  "main": "dist/dusk.js",
+  "main": "dist/dusk.min.js",
   "scripts": {
     "lint": "eslint src",
     "pretest": "npm run build",
     "test": "mocha-phantomjs -p ./node_modules/phantomjs/bin/phantomjs ./test/index.html",
     "posttest": "npm run lint",
-    "build": "./node_modules/.bin/babel ./src/dusk.js | node ./utils/add-banner.js > ./dist/dusk.js",
+    "build": "./node_modules/.bin/babel ./src/dusk.js | node ./utils/add-banner.js > ./dist/dusk.js && ./node_modules/.bin/uglifyjs ./dist/dusk.js -o ./dist/dusk.min.js -c -m --comments",
     "preversion": "npm test",
-    "version": "git add -A",
+    "version": "npm run build && git add -A",
     "postversion": "git push && git push --tags"
   },
   "standard": {
@@ -64,6 +64,7 @@
     "eslint-plugin-react": "^6.0.0",
     "mocha": "^3.0.2",
     "mocha-phantomjs": "^4.1.0",
-    "phantomjs": "^2.1.7"
+    "phantomjs": "^2.1.7",
+    "uglify-js": "^2.7.0"
   }
 }

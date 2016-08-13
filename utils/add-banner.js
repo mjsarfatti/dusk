@@ -6,6 +6,7 @@ const banner = `/*!
  * ${pckgJson.homepage}
  * ${pckgJson.license} License
  * by ${pckgJson.author}
+ * @preserve
  */
 
 `;

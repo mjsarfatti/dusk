@@ -1,9 +1,10 @@
 /*!
- * dusk v0.0.1
+ * dusk v1.0.0
  * A feathery, alacritous DOM abstraction, partly based on PlainJS
  * https://github.com/mjsarfatti/dusk#readme
  * MIT License
  * by Manuele J Sarfatti <mjsarfatti@gmail.com>
+ * @preserve
  */
 
 (function (global, factory) {

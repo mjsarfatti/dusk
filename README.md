@@ -24,23 +24,23 @@ var $context = dusk('.class', '#context');             // and it can use a conte
 
 ### Download it...
 
-Get it from `https://github.com/mjsarfatti/dusk/blob/master/dist/dusk.js`, then include it with:
+Get it from `https://github.com/mjsarfatti/dusk/blob/master/dist/dusk.min.js`, then include it with:
 
 **HTML**
 ```html
-<script src="path/to/dusk.js"></script>
+<script src="path/to/dusk.min.js"></script>
 ```
 
 **AMD**
 ```js
-require(['path/to/dusk.js'], function(dusk) {
+require(['path/to/dusk.min.js'], function(dusk) {
 	// ...
 });
 ```
 
 **CommonJS**
 ```js
-var dusk = require('path/to/dusk.js');
+var dusk = require('path/to/dusk.min.js');
 ```
 
 ### ...or NPM it
