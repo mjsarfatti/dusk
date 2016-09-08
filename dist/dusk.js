@@ -35,6 +35,33 @@
   /* global window, document, NodeList, HTMLCollection */
 
   /**
+   * Polyfills
+   */
+
+  // matches polyfill
+  (function matchesPolyfill(ElementPrototype) {
+    ElementPrototype.matches = ElementPrototype.matches || // eslint-disable-line
+    ElementPrototype.matchesSelector || ElementPrototype.webkitMatchesSelector || ElementPrototype.msMatchesSelector || function polyfill(selector) {
+      var node = this;
+      var nodes = (node.parentNode || node.document).querySelectorAll(selector);
+      var i = -1;
+      while (nodes[++i] && nodes[i] !== node) {}
+      return !!nodes[i];
+    };
+  })(window.Element.prototype);
+
+  // closest polyfill
+  (function closestPolyfill(ElementPrototype) {
+    ElementPrototype.closest = ElementPrototype.closest || // eslint-disable-line
+    function polyfill(selector) {
+      var el = this;
+      while (el.matches && !el.matches(selector)) {
+        el = el.parentNode;
+      }return el.matches ? el : null;
+    };
+  })(window.Element.prototype);
+
+  /**
    * Fastest way to turn a nodeList into a proper Array
    * NOTE: it places nodeList at the beginning of the array!
    * @param  {Array} array    Passed by reference
@@ -146,6 +173,41 @@
       // A fallback to window.onload, that will always work
       window.addEventListener('load', completed);
     }
+  };
+
+  // Class helpers
+  dusk.fn.hasClass = function hasClass(className) {
+
+    // Return early if no element was selected
+    if (!this.length) return false;
+
+    return this[0].classList ? this[0].classList.contains(className) : new RegExp('\\b' + className + '\\b').test(this[0].className);
+  };
+
+  dusk.fn.addClass = function addClass(className) {
+
+    for (var i = this.length - 1; i >= 0; i--) {
+      if (this[i].classList) {
+        this[i].classList.add(className);
+      } else if (!new RegExp('\\b' + className + '\\b').test(this[i].className)) {
+        this[i].className += ' ' + className;
+      }
+    }
+
+    return this;
+  };
+
+  dusk.fn.removeClass = function removeClass(className) {
+
+    for (var i = this.length - 1; i >= 0; i--) {
+      if (this[i].classList) {
+        this[i].classList.remove(className);
+      } else {
+        this[i].className = this[i].className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+      }
+    }
+
+    return this;
   };
 
   exports.default = dusk;

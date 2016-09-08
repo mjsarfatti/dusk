@@ -171,7 +171,7 @@ describe('dusk()', function () {
 
 });
 
-describe('.-––~^ performance', function () {
+describe('·•: performance :•·', function () {
 
   var $perf;
 
@@ -229,7 +229,7 @@ describe('.-––~^ performance', function () {
     }, 1000);
     const dTime = result.a;
     const $Time = result.b;
-    console.log('[perf] vs jQuery #id      - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
+    console.log('[perf] vs jQuery #id      - dusk: ' + dTime + 'ms; jQuery: ' + $Time + 'ms');
     if (dTime > $Time * 1.1) err();
   });
 
@@ -241,7 +241,7 @@ describe('.-––~^ performance', function () {
     }, 1000);
     const dTime = result.a;
     const $Time = result.b;
-    console.log('[perf] vs jQuery tag      - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
+    console.log('[perf] vs jQuery tag      - dusk: ' + dTime + 'ms; jQuery: ' + $Time + 'ms');
     if (dTime > $Time * 1.1) err();
   });
 
@@ -253,7 +253,7 @@ describe('.-––~^ performance', function () {
     }, 1000);
     const dTime = result.a;
     const $Time = result.b;
-    console.log('[perf] vs jQuery .class   - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
+    console.log('[perf] vs jQuery .class   - dusk: ' + dTime + 'ms; jQuery: ' + $Time + 'ms');
     if (dTime > $Time * 1.1) err();
   });
 
@@ -265,8 +265,40 @@ describe('.-––~^ performance', function () {
     }, 1000);
     const dTime = result.a;
     const $Time = result.b;
-    console.log('[perf] vs jQuery complex  - dusk: ' + dTime + 'ms; $: ' + $Time + 'ms');
+    console.log('[perf] vs jQuery complex  - dusk: ' + dTime + 'ms; jQuery: ' + $Time + 'ms');
     if (dTime > $Time * 1.1) err();
+  });
+
+});
+
+describe('Classes', function () {
+
+  it('should detect that an element has a class', function () {
+    if (dusk('#demo').hasClass('demo') !== true) err();
+  });
+
+  it('should detect that an element doesn’t have a class', function () {
+    if (dusk('#demo').hasClass('non-existing-class') !== false) err();
+  });
+
+  it('should add a class to an element', function () {
+    dusk('#demo').addClass('added-class');
+    if (dusk('#demo').hasClass('added-class') !== true) err();
+  });
+
+  it('should remove a class from an element', function () {
+    dusk('#demo').removeClass('to-be-removed-class');
+    if (dusk('#demo').hasClass('to-be-removed-class') !== false) err();
+  });
+
+  it('should add a class to many elements', function () {
+    dusk('#context > div').addClass('added-class');
+    if (dusk('.added-class', '#context').length !== 2) err();
+  });
+
+  it('should remove a class from many elements', function () {
+    dusk('#context > div').removeClass('to-be-removed-class');
+    if (dusk('.to-be-removed-class', '#context').length !== 0) err();
   });
 
 });
