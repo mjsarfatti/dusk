@@ -171,7 +171,7 @@ describe('dusk()', function () {
 
 });
 
-describe('·•: performance :•·', function () {
+describe('Performance', function () {
 
   var $perf;
 
@@ -291,14 +291,58 @@ describe('Classes', function () {
     if (dusk('#demo').hasClass('to-be-removed-class') !== false) err();
   });
 
-  it('should add a class to many elements', function () {
-    dusk('#context > div').addClass('added-class');
-    if (dusk('.added-class', '#context').length !== 2) err();
+  it('should toggle a class on an element', function () {
+    dusk('#demo').toggleClass('to-be-toggled-class', 1);
+    if (dusk('#demo').hasClass('to-be-toggled-class') !== true) err();
+    dusk('#demo').toggleClass('to-be-toggled-class', 0);
+    if (dusk('#demo').hasClass('to-be-toggled-class') !== false) err();
   });
 
-  it('should remove a class from many elements', function () {
-    dusk('#context > div').removeClass('to-be-removed-class');
-    if (dusk('.to-be-removed-class', '#context').length !== 0) err();
+});
+
+describe('Events', function () {
+
+  it('should attach an event listener to an element', function () {
+
+    function listener(event) {
+      const element = event.target;
+      element.duskTriggeredOn = true;
+    }
+
+    dusk('#demo').on('click', listener);
+    dusk('#demo')[0].click();
+    if (!dusk('#demo')[0].duskTriggeredOn) err();
+  });
+
+  it('should remove an event listener from an element', function () {
+
+    function listener(event) {
+      const element = event.target;
+      element.duskTriggeredOff = element.duskTriggeredOff
+        ? element.duskTriggeredOff + 1
+        : 1;
+    }
+
+    dusk('#demo').on('click', listener);
+    dusk('#demo')[0].click();
+    dusk('#demo').off('click', listener);
+    dusk('#demo')[0].click();
+    if (dusk('#demo')[0].duskTriggeredOff !== 1) err();
+  });
+
+  it('should attach an event listener to an element only once', function () {
+
+    function listener(event) {
+      const element = event.target;
+      element.duskTriggeredOnce = element.duskTriggeredOnce
+        ? element.duskTriggeredOnce + 1
+        : 1;
+    }
+
+    dusk('#demo').one('click', listener);
+    dusk('#demo')[0].click();
+    dusk('#demo')[0].click();
+    if (dusk('#demo')[0].duskTriggeredOnce !== 1) err();
   });
 
 });

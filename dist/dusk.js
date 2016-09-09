@@ -35,10 +35,10 @@
   /* global window, document, NodeList, HTMLCollection */
 
   /**
-   * Polyfills
-   */
+   * POLYFILLS
+   ******************************************************************************/
 
-  // matches polyfill
+  // Element.matches polyfill
   (function matchesPolyfill(ElementPrototype) {
     ElementPrototype.matches = ElementPrototype.matches || // eslint-disable-line
     ElementPrototype.matchesSelector || ElementPrototype.webkitMatchesSelector || ElementPrototype.msMatchesSelector || function polyfill(selector) {
@@ -50,7 +50,7 @@
     };
   })(window.Element.prototype);
 
-  // closest polyfill
+  // Element.closest polyfill
   (function closestPolyfill(ElementPrototype) {
     ElementPrototype.closest = ElementPrototype.closest || // eslint-disable-line
     function polyfill(selector) {
@@ -73,7 +73,10 @@
     for (i; i--; array.unshift(nodeList[i])) {}
   }
 
-  // Us!
+  /**
+   * US!
+   ******************************************************************************/
+
   var dusk = function dusk(selector, context) {
     // Select yo'self
     if (selector && selector.dusked) return selector;
@@ -153,7 +156,14 @@
   // Give the init function the dusk prototype for later instantiation
   Dusker.prototype = dusk.fn;
 
-  // DOMReady static method (shamelessly stolen from jQuery)
+  /**
+   * STATIC METHODS
+   ******************************************************************************/
+
+  /**
+   * DOMReady static method (shamelessly stolen from jQuery)
+   * @param {function} ready The function to run on DOM ready
+   */
   dusk.DOMReady = function DOMReady(ready) {
 
     // The ready event handler and self cleanup method
@@ -175,7 +185,16 @@
     }
   };
 
-  // Class helpers
+  /**
+   * CLASS HELPERS
+   ******************************************************************************/
+
+  /**
+   * Checks if the *first* element of the array has a certain class
+   * NOTE: This method is not chainable!
+   * @param  {string}  className The name of the class
+   * @return {Boolean}
+   */
   dusk.fn.hasClass = function hasClass(className) {
 
     // Return early if no element was selected
@@ -184,27 +203,137 @@
     return this[0].classList ? this[0].classList.contains(className) : new RegExp('\\b' + className + '\\b').test(this[0].className);
   };
 
+  /**
+   * addClass helper
+   */
+  function _addClass(element, className) {
+    // eslint-disable-line
+
+    if (element.classList) {
+      element.classList.add(className);
+    } else if (!new RegExp('\\b' + className + '\\b').test(element.className)) {
+      element.className += ' ' + className; // eslint-disable-line
+    }
+  }
+
+  /**
+   * Adds the specified class to each element of the array
+   * @param  {string} className The name of the class
+   * @return {dusk}
+   */
   dusk.fn.addClass = function addClass(className) {
 
-    for (var i = this.length - 1; i >= 0; i--) {
-      if (this[i].classList) {
-        this[i].classList.add(className);
-      } else if (!new RegExp('\\b' + className + '\\b').test(this[i].className)) {
-        this[i].className += ' ' + className;
+    var length = this.length;
+    for (var i = 0; i < length; i++) {
+      _addClass(this[i], className);
+    }
+
+    return this;
+  };
+
+  /**
+   * removeClass helper
+   */
+  function _removeClass(element, className) {
+    // eslint-disable-line
+
+    if (element.classList) {
+      element.classList.remove(className);
+    } else {
+      element.className = element.className.replace(new RegExp('\\b' + className + '\\b', 'g'), ''); // eslint-disable-line
+    }
+  }
+
+  /**
+   * Removes the specified class from each element of the array
+   * @param  {string} className The name of the class
+   * @return {dusk}
+   */
+  dusk.fn.removeClass = function removeClass(className) {
+
+    var length = this.length;
+    for (var i = 0; i < length; i++) {
+      _removeClass(this[i], className);
+    }
+
+    return this;
+  };
+
+  /**
+   * Adds/removes the specified class based on the truthyness of 'condition'
+   * @param  {string} className The name of the class
+   * @param  {mixed}  condition The condition to evaluate
+   * @return {dusk}
+   */
+  dusk.fn.toggleClass = function toggleClass(className, condition) {
+
+    var length = this.length;
+    for (var i = 0; i < length; i++) {
+      if (condition) {
+        _addClass(this[i], className);
+      } else {
+        _removeClass(this[i], className);
       }
     }
 
     return this;
   };
 
-  dusk.fn.removeClass = function removeClass(className) {
+  /**
+   * EVENTS HELPERS
+   ******************************************************************************/
 
-    for (var i = this.length - 1; i >= 0; i--) {
-      if (this[i].classList) {
-        this[i].classList.remove(className);
-      } else {
-        this[i].className = this[i].className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
-      }
+  /**
+   * Adds the specified listener to each element of the array
+   * @param  {string}   type     The event name
+   * @param  {function} listener The callback
+   * @return {dusk}
+   */
+  dusk.fn.on = function on(type, listener) {
+
+    var length = this.length;
+    for (var i = 0; i < length; i++) {
+      this[i].addEventListener(type, listener);
+    }
+
+    return this;
+  };
+
+  /**
+   * Remvoes the specified listener from each element of the array
+   * @param  {string}   type     The event name
+   * @param  {function} listener The callback
+   * @return {dusk}
+   */
+  dusk.fn.off = function off(type, listener) {
+
+    var length = this.length;
+    for (var i = 0; i < length; i++) {
+      this[i].removeEventListener(type, listener);
+    }
+
+    return this;
+  };
+
+  /**
+   * Adds the specified listener to each element of the array, so that
+   * it is called only once
+   * @param  {string}   type     The event name
+   * @param  {function} listener The callback
+   * @return {dusk}
+   */
+  dusk.fn.one = function one(type, listener) {
+
+    var oneTime = function oneTime(event) {
+      // remove event
+      event.target.removeEventListener(event.type, oneTime);
+      // call listener
+      return listener(event);
+    };
+
+    var length = this.length;
+    for (var i = 0; i < length; i++) {
+      this[i].addEventListener(type, oneTime);
     }
 
     return this;
