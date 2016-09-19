@@ -1,4 +1,5 @@
-# dusk
+# dusk 
+[![Build Status](https://travis-ci.org/mjsarfatti/dusk.svg?branch=master)](https://travis-ci.org/mjsarfatti/dusk)  
 _A feathery (light), alacritous (fast), extensible DOM abstraction.
 (Partly based on PlainJS. And faster than jQuery)_
 
