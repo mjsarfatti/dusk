@@ -1,0 +1,4 @@
+language: javascript
+node:
+- 4
+- 6
