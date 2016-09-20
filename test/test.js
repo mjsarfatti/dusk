@@ -300,7 +300,7 @@ describe('Classes', function () {
 
 });
 
-describe.only('Events', function () {
+describe('Events', function () {
 
   it('should attach an event listener to an element', function () {
 
@@ -356,13 +356,13 @@ describe.only('Events', function () {
     dusk('.dusk-transitionable').addClass('dusk-transitionable--transition');
     // transition should last 60ms
     setTimeout(function () {
-      if (!dusk('.dusk-transitionable')[0].duskTriggeredOn) err();
       dusk('.dusk-transitionable').removeClass('dusk-transitionable--transition');
+      if (!dusk('.dusk-transitionable')[0].duskTriggeredOn) err();
       // transition should last another 60ms
       setTimeout(function () {
         done();
-      }, 110);
-    }, 110);
+      }, 300);
+    }, 300);
 
   });
 
@@ -385,8 +385,8 @@ describe.only('Events', function () {
       setTimeout(function () {
         if (dusk('.dusk-transitionable')[0].duskTriggeredOff !== 1) err();
         done();
-      }, 110);
-    }, 110);
+      }, 300);
+    }, 300);
 
   });
 
@@ -408,8 +408,8 @@ describe.only('Events', function () {
       setTimeout(function () {
         if (dusk('.dusk-transitionable')[0].duskTriggeredOnce !== 1) err();
         done();
-      }, 110);
-    }, 110);
+      }, 300);
+    }, 300);
 
   });
 
