@@ -284,16 +284,33 @@
    ******************************************************************************/
 
   /**
+   * For prefixed events
+   * @type {Array}
+   */
+  var prefixes = ['webkit', 'moz', 'MS', 'o', ''];
+
+  /**
    * Adds the specified listener to each element of the array
    * @param  {string}   type     The event name
    * @param  {function} listener The callback
    * @return {dusk}
    */
   dusk.fn.on = function on(type, listener) {
+    var prefixed = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
 
     var length = this.length;
+
     for (var i = 0; i < length; i++) {
-      this[i].addEventListener(type, listener);
+
+      if (prefixed) {
+        for (var p = 0; p < prefixes.length; p++) {
+          if (!prefixes[p]) type = type.toLowerCase(); // eslint-disable-line
+          this[i].addEventListener(prefixes[p] + type, listener);
+        }
+      } else {
+        this[i].addEventListener(type, listener);
+      }
     }
 
     return this;
@@ -306,10 +323,21 @@
    * @return {dusk}
    */
   dusk.fn.off = function off(type, listener) {
+    var prefixed = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
 
     var length = this.length;
+
     for (var i = 0; i < length; i++) {
-      this[i].removeEventListener(type, listener);
+
+      if (prefixed) {
+        for (var p = 0; p < prefixes.length; p++) {
+          if (!prefixes[p]) type = type.toLowerCase(); // eslint-disable-line
+          this[i].removeEventListener(prefixes[p] + type, listener);
+        }
+      } else {
+        this[i].removeEventListener(type, listener);
+      }
     }
 
     return this;
@@ -323,6 +351,8 @@
    * @return {dusk}
    */
   dusk.fn.one = function one(type, listener) {
+    var prefixed = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
 
     var oneTime = function oneTime(event) {
       // remove event
@@ -332,8 +362,17 @@
     };
 
     var length = this.length;
+
     for (var i = 0; i < length; i++) {
-      this[i].addEventListener(type, oneTime);
+
+      if (prefixed) {
+        for (var p = 0; p < prefixes.length; p++) {
+          if (!prefixes[p]) type = type.toLowerCase(); // eslint-disable-line
+          this[i].addEventListener(prefixes[p] + type, oneTime);
+        }
+      } else {
+        this[i].addEventListener(type, oneTime);
+      }
     }
 
     return this;

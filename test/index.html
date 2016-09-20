@@ -5,6 +5,17 @@
   <title>Dusk — A feathery, alacritous DOM abstraction, partly based on PlainJS</title>
   <link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
 
+  <style>
+    .dusk-transitionable {
+      position: absolute;
+      left: -9999px;
+      transition: all 60ms;
+    }
+    .dusk-transitionable--transition {
+      transform: translateX(100px);
+    }
+  </style>
+
   <script src="../node_modules/mocha/mocha.js"></script>
   <script>mocha.setup('bdd')</script>
   <script type="text/javascript" src="../dist/dusk.js"></script>
@@ -26,7 +37,8 @@
     </div>
     <img id="weight" src="http://images.unsplash.com/photo-1467321638755-7246fd0dc1f3?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1125&q=95&cs=tinysrgb" />
   </div>
-  <div class="performance"></div>
+  <div class="dusk-performance"></div>
+  <div class="dusk-transitionable"></div>
 
   <script>
     dusk.DOMReady(function() {

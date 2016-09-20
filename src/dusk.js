@@ -271,16 +271,32 @@ dusk.fn.toggleClass = function toggleClass(className, condition) {
  ******************************************************************************/
 
 /**
+ * For prefixed events
+ * @type {Array}
+ */
+const prefixes = ['webkit', 'moz', 'MS', 'o', ''];
+
+/**
  * Adds the specified listener to each element of the array
  * @param  {string}   type     The event name
  * @param  {function} listener The callback
  * @return {dusk}
  */
-dusk.fn.on = function on(type, listener) {
+dusk.fn.on = function on(type, listener, prefixed = false) {
 
   const length = this.length;
+
   for (let i = 0; i < length; i++) {
-    this[i].addEventListener(type, listener);
+
+    if (prefixed) {
+      for (let p = 0; p < prefixes.length; p++) {
+        if (!prefixes[p]) type = type.toLowerCase(); // eslint-disable-line
+        this[i].addEventListener(prefixes[p] + type, listener);
+      }
+    } else {
+      this[i].addEventListener(type, listener);
+    }
+
   }
 
   return this;
@@ -293,11 +309,21 @@ dusk.fn.on = function on(type, listener) {
  * @param  {function} listener The callback
  * @return {dusk}
  */
-dusk.fn.off = function off(type, listener) {
+dusk.fn.off = function off(type, listener, prefixed = false) {
 
   const length = this.length;
+
   for (let i = 0; i < length; i++) {
-    this[i].removeEventListener(type, listener);
+
+    if (prefixed) {
+      for (let p = 0; p < prefixes.length; p++) {
+        if (!prefixes[p]) type = type.toLowerCase(); // eslint-disable-line
+        this[i].removeEventListener(prefixes[p] + type, listener);
+      }
+    } else {
+      this[i].removeEventListener(type, listener);
+    }
+
   }
 
   return this;
@@ -311,7 +337,7 @@ dusk.fn.off = function off(type, listener) {
  * @param  {function} listener The callback
  * @return {dusk}
  */
-dusk.fn.one = function one(type, listener) {
+dusk.fn.one = function one(type, listener, prefixed = false) {
 
   const oneTime = function oneTime(event) {
     // remove event
@@ -321,8 +347,18 @@ dusk.fn.one = function one(type, listener) {
   };
 
   const length = this.length;
+
   for (let i = 0; i < length; i++) {
-    this[i].addEventListener(type, oneTime);
+
+    if (prefixed) {
+      for (let p = 0; p < prefixes.length; p++) {
+        if (!prefixes[p]) type = type.toLowerCase(); // eslint-disable-line
+        this[i].addEventListener(prefixes[p] + type, oneTime);
+      }
+    } else {
+      this[i].addEventListener(type, oneTime);
+    }
+
   }
 
   return this;

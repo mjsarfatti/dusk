@@ -201,7 +201,7 @@ describe('Performance', function () {
 
   // Generate a big and varied 1000 elements table
   before(function () {
-    $perf = dusk('.performance')[0];
+    $perf = dusk('.dusk-performance')[0];
     performance(function (i) {
       $perf.innerHTML += '<tr class="ro">' +
         '<td id="idn' + i + '"></td><td class="tabletest"></td><td></td><td></td>' +
@@ -300,7 +300,7 @@ describe('Classes', function () {
 
 });
 
-describe('Events', function () {
+describe.only('Events', function () {
 
   it('should attach an event listener to an element', function () {
 
@@ -343,6 +343,74 @@ describe('Events', function () {
     dusk('#demo')[0].click();
     dusk('#demo')[0].click();
     if (dusk('#demo')[0].duskTriggeredOnce !== 1) err();
+  });
+
+  it('should attach a prefixed (transitionEnd) event listener to an element', function (done) {
+
+    function listener(event) {
+      const element = event.target;
+      element.duskTriggeredOn = true;
+    }
+
+    dusk('.dusk-transitionable').on('transitionEnd', listener, true);
+    dusk('.dusk-transitionable').addClass('dusk-transitionable--transition');
+    // transition should last 60ms
+    setTimeout(function () {
+      if (!dusk('.dusk-transitionable')[0].duskTriggeredOn) err();
+      dusk('.dusk-transitionable').removeClass('dusk-transitionable--transition');
+      // transition should last another 60ms
+      setTimeout(function () {
+        done();
+      }, 110);
+    }, 110);
+
+  });
+
+  it('should remove a prefixed (transitionEnd) event listener from an element', function (done) {
+
+    function listener(event) {
+      const element = event.target;
+      element.duskTriggeredOff = element.duskTriggeredOff
+        ? element.duskTriggeredOff + 1
+        : 1;
+    }
+
+    dusk('.dusk-transitionable').on('transitionEnd', listener, true);
+    dusk('.dusk-transitionable').addClass('dusk-transitionable--transition');
+    // transition should last 60ms
+    setTimeout(function () {
+      dusk('.dusk-transitionable').off('transitionEnd', listener, true);
+      dusk('.dusk-transitionable').removeClass('dusk-transitionable--transition');
+      // transition should last another 60ms
+      setTimeout(function () {
+        if (dusk('.dusk-transitionable')[0].duskTriggeredOff !== 1) err();
+        done();
+      }, 110);
+    }, 110);
+
+  });
+
+  it('should attach a prefixed (transitionEnd) event listener only once', function (done) {
+
+    function listener(event) {
+      const element = event.target;
+      element.duskTriggeredOnce = element.duskTriggeredOnce
+        ? element.duskTriggeredOnce + 1
+        : 1;
+    }
+
+    dusk('.dusk-transitionable').one('transitionEnd', listener, true);
+    dusk('.dusk-transitionable').addClass('dusk-transitionable--transition');
+    // transition should last 60ms
+    setTimeout(function () {
+      dusk('.dusk-transitionable').removeClass('dusk-transitionable--transition');
+      // transition should last another60ms
+      setTimeout(function () {
+        if (dusk('.dusk-transitionable')[0].duskTriggeredOnce !== 1) err();
+        done();
+      }, 110);
+    }, 110);
+
   });
 
 });
